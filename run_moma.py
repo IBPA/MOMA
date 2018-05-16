@@ -21,7 +21,7 @@ GP_COLUMN_NAME_PREFIX        = "gp"      # e.g. gp.b1039_KO
 PREFIX_DELIMETER             = "."
 WT_CONDITIONS                = ['MG1655.MD001.none.na_WT','MG1655.MD018.none.na_WT'] # WILDTYPE CONDITION WITH M9+Glu or LB
 
-### check if each of {strain,medium,stress,genetic_perturbations} of test_condition is in train_conditions. 
+### check if each of {strain,medium,stress,genetic_perturbations} of test_condition is in train_conditions.
 ### return True only when there are all of four information in train_conditions.
 def is_condition_validatable(test_condition, train_conditions):
     list_test_condition = test_condition.split(PREFIX_DELIMETER)
@@ -76,7 +76,6 @@ hidden_node_activation     = 'sigmoid'
 recurrent_dropout          = 0.7
 optimization_method        = eval(sys.argv[3]) # RMSProp or SGD
 condition_idx_to_test      = int(sys.argv[4])
-note                       = sys.argv[5]
 
 print("[DATA READ] {} samples, {} timesteps, {} features".format(n_conditions, n_timesteps, n_features))
 
@@ -84,7 +83,7 @@ print("[DATA READ] {} samples, {} timesteps, {} features".format(n_conditions, n
 for idx, row in pd_data.iterrows():
     for timestep in range(n_timesteps):
         X[idx, timestep, :] = row[input_column_names]
-    
+
 ### CREATE MODEL ###
 model = Sequential()
 model.add(SimpleRNN(n_hidden_nodes,
@@ -117,13 +116,11 @@ test_Y  = Y[condition_idx_to_test,:]
 ### set initial state of recurrent hidden nodes to mean expression level of wildtype profiles
 wildtype_state            = get_wildtype_exp(pd_train_data['Cond'], pd_train_data[output_column_names])
 model.layers[0].states[0] = K.variable(value=np.array(wildtype_state))
-history                   = model.fit(train_X, train_Y, epochs=n_epochs, verbose=1, callbacks=callbacks, batch_size=32)   
+history                   = model.fit(train_X, train_Y, epochs=n_epochs, verbose=1, callbacks=callbacks, batch_size=32)
 
 ### EVALUATE MODEL PERFORMANCE ###
 test_predicted_Y  = model.predict(test_X[np.newaxis,:,:])
 test_pcc          = np.corrcoef(test_predicted_Y, test_Y)[0,1]
 wt_baseline_pcc   = np.corrcoef(wildtype_state, test_Y)[0,1]
 
-print("[MODEL EVALUATION {}] {} PCC: {}, WT Baseline: {} (note: {})".format(condition_idx_to_test, pd_data['Cond'][condition_idx_to_test], test_pcc, wt_baseline_pcc, note))
-
-
+print("[MODEL EVALUATION {}] {} PCC: {}, WT Baseline: {}".format(condition_idx_to_test, pd_data['Cond'][condition_idx_to_test], test_pcc, wt_baseline_pcc))
