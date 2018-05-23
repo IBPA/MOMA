@@ -19,7 +19,7 @@ Then you download the Ecomcis transcriptome data from [here](https://www.dropbox
 This step will preprocess the original dataset in the format that MOMA can train. For this, type
 ```Rscript preprocess_dataset.R Dataset/Ecomics.transcriptome.no_avg.v8.txt Dataset/Ecomics.transcriptome_with_meta.avg.v8.txt```
 
-Note that the code reads information from <code>Dataset/Meta.txt</code>, <code>Dataset/Meta.Medium.txt, <code>Dataset/Meta.Strain.txt</code>. This will save the preprocessed dataset in the file <code>Dataset/Ecomics.transcriptome_with_meta.avg.v8.txt</code>
+Note that the code reads information from <code>Dataset/Meta.txt</code>, <code>Dataset/Meta.Medium.txt</code>, <code>Dataset/Meta.Strain.txt</code>. This will save the preprocessed dataset in the file <code>Dataset/Ecomics.transcriptome_with_meta.avg.v8.txt</code>
 
 ### Step 4: Run MOMA
 Then you can run MOMA (prediction of transcriptomic response from characteristics of experimental condition) by
