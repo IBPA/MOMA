@@ -102,7 +102,7 @@ addMetadata <- function(d, meta_category, meta, meta.nonbioinfo, id, meta_idx, e
       names(meta.bioinfo) <- paste0(meta_category,".", colnames(meta)[-which(colnames(meta) %in% meta.nonbioinfo)])
       d.with_meta_info    <- rbind(d.with_meta_info, c(meta.bioinfo, d[row_idx,]))
    }
-   rownames(d.with_meta_info) <- rownames(d)
+   rownames(d.with_meta_info) <- c("Cond", rownames(d))
    return(d.with_meta_info)
 }
 
