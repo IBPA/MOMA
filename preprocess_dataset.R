@@ -112,6 +112,6 @@ transcriptome_data.exp         <- getExponentialData(transcriptome_data)        
 transcriptome_data.avg         <- averageSameConditionProfiles(transcriptome_data.exp) # average expression levels for each condition
 transcriptome_data.norm        <- normalizeOmics(transcriptome_data.avg,"nofactor")    # apply min-max normalization
 transcriptome_data.with_meta   <- expandMetadata(transcriptome_data.norm)              # expand metadata features from "Cond" variable
-rownames(transcriptome_data.with_meta)[1] <- "Cond"
+colnames(transcriptome_data.with_meta)[1] <- "Cond"
 
 write.table(transcriptome_data.with_meta, args[2], sep="\t", quote=F)
