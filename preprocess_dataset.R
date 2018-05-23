@@ -102,7 +102,7 @@ addMetadata <- function(d, meta_category, meta, meta.nonbioinfo, id, meta_idx, e
       names(meta.bioinfo) <- paste0(meta_category,".", colnames(meta)[-which(colnames(meta) %in% meta.nonbioinfo)])
       d.with_meta_info    <- rbind(d.with_meta_info, c(meta.bioinfo, d[row_idx,]))
    }
-   rownames(d.with_meta_info) <- c("Cond", rownames(d))
+   rownames(d.with_meta_info) <- rownames(d)
    return(d.with_meta_info)
 }
 
@@ -112,5 +112,6 @@ transcriptome_data.exp         <- getExponentialData(transcriptome_data)        
 transcriptome_data.avg         <- averageSameConditionProfiles(transcriptome_data.exp) # average expression levels for each condition
 transcriptome_data.norm        <- normalizeOmics(transcriptome_data.avg,"nofactor")    # apply min-max normalization
 transcriptome_data.with_meta   <- expandMetadata(transcriptome_data.norm)              # expand metadata features from "Cond" variable
+rownames(transcriptome_data.with_meta) <- c("Cond", rownames(transcriptome_data.with_meta))
 
 write.table(transcriptome_data.with_meta, args[2], sep="\t", quote=F)
